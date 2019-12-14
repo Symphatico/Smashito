@@ -2,14 +2,23 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Autocomplete from "./Autocomplete";
 
+import { connect } from "react-redux";
+import { characterInfo } from "../../actions/characterAction";
+
 class Navbar extends React.Component {
+  async componentDidMount() {
+    await this.props.characterInfo();
+  }
+
   autocomplete() {
-    let data = {
-      Apple: null,
-      Microsoft: null,
-      Google: "https://placehold.it/250x250"
-    };
-    return data;
+    const { characters } = this.props;
+    if (!characters) return null;
+    let characterData = {};
+    characters.forEach(element => {
+      characterData[element.id] = element.url;
+    });
+    console.log(characterData);
+    return characterData;
   }
   render() {
     return (
@@ -29,4 +38,8 @@ class Navbar extends React.Component {
   }
 }
 
-export default Navbar;
+const mapStateToProps = state => {
+  return { characters: state.characterInfo.characterInfo };
+};
+
+export default connect(mapStateToProps, { characterInfo })(Navbar);

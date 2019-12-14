@@ -11,6 +11,19 @@ class Autocomplete extends Component {
     };
     this.instance = M.Autocomplete.init(this._Autocomplete, options);
   }
+
+  componentDidUpdate() {
+    if (this.instance) {
+      console.log("asdsa");
+      this.instance.destroy();
+      let { data } = this.props;
+      console.log(data);
+      const options = {
+        data: data
+      };
+      this.instance = M.Autocomplete.init(this._Autocomplete, options);
+    }
+  }
   render() {
     return (
       <div className="input-field col s4 right">
