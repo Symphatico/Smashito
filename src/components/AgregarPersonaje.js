@@ -1,9 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import { newCharacter } from "../actions/characterAction";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 class AgregarPersonaje extends React.Component {
+  redirectPage() {
+    return <Redirect to="/" />;
+  }
   addCharacter = async () => {
     //Sacar el valor de los inputs
     let info = this.getInputValue();
@@ -36,7 +39,7 @@ class AgregarPersonaje extends React.Component {
           id="URLimagen"
           type="text"
         ></input>
-        <Link to="/">
+        <Link onClick={this.redirectPage} to="/">
           <a class="btn-floating btn-large waves-effect waves-light red right">
             <i onClick={this.addCharacter} class="material-icons">
               add

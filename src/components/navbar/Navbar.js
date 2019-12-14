@@ -3,16 +3,24 @@ import { Link } from "react-router-dom";
 import Autocomplete from "./Autocomplete";
 
 class Navbar extends React.Component {
+  autocomplete() {
+    let data = {
+      Apple: null,
+      Microsoft: null,
+      Google: "https://placehold.it/250x250"
+    };
+    return data;
+  }
   render() {
     return (
       <div>
         <nav>
-          <div class="nav-wrapper">
-            <Link to="/characters" class="brand-logo">
+          <div className="nav-wrapper">
+            <Link to="/characters" className="brand-logo">
               Logo
             </Link>
             <form>
-              <Autocomplete />
+              <Autocomplete data={this.autocomplete()} />
             </form>
           </div>
         </nav>
