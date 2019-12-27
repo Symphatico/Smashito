@@ -19,7 +19,7 @@ class App extends React.Component {
               component={() => <Redirect to="/characters" />}
             />
             <Route
-              path="/characters/{characterId}/rates"
+              path={`/characters/${PaginaPersonaje.id}/rates`}
               exact
               component={PaginaPersonaje}
             />
