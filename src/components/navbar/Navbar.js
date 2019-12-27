@@ -17,7 +17,6 @@ class Navbar extends React.Component {
     characters.forEach(element => {
       characterData[element.id] = element.url;
     });
-    console.log(characterData);
     return characterData;
   }
   render() {

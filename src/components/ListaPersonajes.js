@@ -56,11 +56,6 @@ class ListaPersonajes extends React.Component {
       <div className="container">
         {/* Carta del personaje */}
         <div className="row">{(this.sortProps(), this.renderCard())}</div>
-
-        {/* Boton para ir a agregar personaje */}
-        <Link to="/addCharacter" className="waves-effect waves-light btn">
-          Agregar Personaje
-        </Link>
       </div>
     );
   }

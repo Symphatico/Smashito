@@ -5,7 +5,6 @@ import M from "materialize-css";
 class Autocomplete extends Component {
   componentDidMount() {
     let { data } = this.props;
-    console.log(data);
     const options = {
       data: data
     };
@@ -14,10 +13,8 @@ class Autocomplete extends Component {
 
   componentDidUpdate() {
     if (this.instance) {
-      console.log("asdsa");
       this.instance.destroy();
       let { data } = this.props;
-      console.log(data);
       const options = {
         data: data
       };

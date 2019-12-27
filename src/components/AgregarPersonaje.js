@@ -1,20 +1,21 @@
 import React from "react";
 import { connect } from "react-redux";
 import { newCharacter } from "../actions/characterAction";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 class AgregarPersonaje extends React.Component {
-  redirectPage() {
-    return <Redirect to="/" />;
-  }
+  redirectPage = () => {
+    const { history } = this.props;
+    history.push("/");
+  };
   addCharacter = async () => {
     //Sacar el valor de los inputs
     let info = this.getInputValue();
-    const dummyCharacter = {
+    const newInfoCharacter = {
       id: info.idNuevo,
       url: info.UrlNuevo
     };
-    await this.props.newCharacter(dummyCharacter);
+    await this.props.newCharacter(newInfoCharacter);
   };
 
   getInputValue() {
@@ -41,7 +42,7 @@ class AgregarPersonaje extends React.Component {
         ></input>
         <Link onClick={this.redirectPage} to="/">
           <a class="btn-floating btn-large waves-effect waves-light red right">
-            <i onClick={this.addCharacter} class="material-icons">
+            <i onClick={this.addCharacter} className="material-icons">
               add
             </i>
           </a>
