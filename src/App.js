@@ -1,12 +1,18 @@
 import React from "react";
 import { Router, Route, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 import history from "./history";
 import Principal from "./components/Principal";
 import PaginaPersonaje from "./components/PaginaPersonaje";
 import Navbar from "./components/navbar/Navbar";
 import AgregarPersonaje from "./components/AgregarPersonaje";
+import { characterInfo } from "./actions/characterAction";
 
 class App extends React.Component {
+  async componentDidMount() {
+    await this.props.characterInfo();
+  }
+
   render() {
     return (
       <div>
@@ -19,7 +25,7 @@ class App extends React.Component {
               component={() => <Redirect to="/characters" />}
             />
             <Route
-              path={`/characters/${PaginaPersonaje.id}/rates`}
+              path={`/characters/:characterId/rates`}
               exact
               component={PaginaPersonaje}
             />
@@ -32,4 +38,7 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return { characters: state.characterInfo.characterInfo };
+};
+export default connect(mapStateToProps, { characterInfo })(App);

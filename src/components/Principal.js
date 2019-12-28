@@ -9,7 +9,7 @@ class Principal extends React.Component {
         <ListaPersonajes />
         <div className="container">
           <Link to="/addCharacter" className="waves-effect waves-light btn">
-            Agregar PErsonaje
+            Agregar Personaje
           </Link>
         </div>
       </div>

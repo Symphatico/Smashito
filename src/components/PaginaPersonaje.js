@@ -1,23 +1,22 @@
 import React from "react";
-import { connect } from "react-redux";
-import { characterInfo } from "../actions/characterAction";
+import "./ListaPersonajes.css";
+import ListaPersonajes from "./ListaPersonajes";
 
 class PaginaPersonaje extends React.Component {
-  async componentDidMount() {
-    await this.props.characterInfo();
-  }
   render() {
+    const { data } = this.props.location;
     return (
-      <div className="container">
-        <img src="/" alt="PELASTE(Soy la imagen)" />
-        <h3>*Nombre del Personaje</h3>
+      <div>
+        <div className="container center">
+          <img className="imagenPersonaje" src={data.img} alt="Soy la imagen" />
+          <h3>{data.id}</h3>
+        </div>
+        <div>
+          <ListaPersonajes votar={true} />
+        </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return { characters: state.characterInfo.characterInfo };
-};
-
-export default connect(mapStateToProps, { characterInfo })(PaginaPersonaje);
+export default PaginaPersonaje;

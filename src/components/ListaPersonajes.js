@@ -10,6 +10,7 @@ class ListaPersonajes extends React.Component {
   }
 
   sortProps() {
+    console.log(this.props);
     const { characters } = this.props;
     return characters
       ? characters.sort(function(a, b) {
@@ -23,8 +24,31 @@ class ListaPersonajes extends React.Component {
         })
       : null;
   }
+
+  renderVotos() {
+    const { votar } = this.props;
+    const { characters } = this.props;
+    console.log(characters);
+    if (votar === true) {
+      return (
+        <div className="row">
+          <div className="col s6">
+            <a className="waves-effect waves-teal btn-flat">
+              <i className="material-icons">thumb_up</i>
+            </a>
+          </div>
+          <div className="col s6">
+            <a className="waves-effect waves-teal btn-flat">
+              <i className="material-icons">thumb_down</i>
+            </a>
+          </div>
+        </div>
+      );
+    }
+  }
   renderCard() {
     const { characters } = this.props;
+
     return characters
       ? characters.map((info, index) => {
           return (
@@ -34,7 +58,10 @@ class ListaPersonajes extends React.Component {
                   <div className="card-image">
                     <img src={info.url} alt="Pelaste" className="height" />
                     <Link
-                      to="/characters/{characterId}/rates"
+                      to={{
+                        pathname: `/characters/${info.id}/rates`,
+                        data: { id: info.id, img: info.url }
+                      }}
                       className="btn-floating halfway-fab waves-effect waves-light red"
                     >
                       <i className="material-icons">arrow_forward</i>
@@ -42,6 +69,7 @@ class ListaPersonajes extends React.Component {
                   </div>
                   <div className="card-content">
                     <p>{info.id}</p>
+                    {this.renderVotos()}
                   </div>
                 </div>
               </div>
@@ -64,4 +92,5 @@ class ListaPersonajes extends React.Component {
 const mapStateToProps = state => {
   return { characters: state.characterInfo.characterInfo };
 };
+
 export default connect(mapStateToProps, { characterInfo })(ListaPersonajes);

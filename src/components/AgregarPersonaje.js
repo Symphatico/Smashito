@@ -41,7 +41,7 @@ class AgregarPersonaje extends React.Component {
           type="text"
         ></input>
         <Link onClick={this.redirectPage} to="/">
-          <a class="btn-floating btn-large waves-effect waves-light red right">
+          <a className="btn-floating btn-large waves-effect waves-light red right">
             <i onClick={this.addCharacter} className="material-icons">
               add
             </i>
