@@ -1,6 +1,7 @@
 //Pitudo el autocomplete, sirve para todo
 import React, { Component } from "react";
 import M from "materialize-css";
+import history from "../../history";
 
 class Autocomplete extends Component {
   componentDidMount() {
@@ -16,8 +17,12 @@ class Autocomplete extends Component {
       this.instance.destroy();
       let { data } = this.props;
       const options = {
-        data: data
+        data: data,
+        onAutocomplete: info => {
+          history.push(`/characters/${info}/rates`);
+        }
       };
+
       this.instance = M.Autocomplete.init(this._Autocomplete, options);
     }
   }

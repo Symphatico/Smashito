@@ -5,12 +5,11 @@ import "./ListaPersonajes.css";
 import { characterInfo } from "../actions/characterAction";
 
 class ListaPersonajes extends React.Component {
-  async componentDidMount() {
+  async componentWillMount() {
     await this.props.characterInfo();
   }
 
   sortProps() {
-    console.log(this.props);
     const { characters } = this.props;
     return characters
       ? characters.sort(function(a, b) {
@@ -25,15 +24,24 @@ class ListaPersonajes extends React.Component {
       : null;
   }
 
-  renderVotos() {
+  darVoto(totalVotos, voto) {
+    //Voto=1/Positivo, Voto=0/Negativo
+    if (voto === 1) {
+      return totalVotos + 1;
+    }
+    return totalVotos - 1;
+  }
+
+  renderVotos(totalVotos) {
     const { votar } = this.props;
-    const { characters } = this.props;
-    console.log(characters);
     if (votar === true) {
       return (
         <div className="row">
           <div className="col s6">
-            <a className="waves-effect waves-teal btn-flat">
+            <a
+              onClick={() => this.totalVotos + 1}
+              className="waves-effect waves-teal btn-flat"
+            >
               <i className="material-icons">thumb_up</i>
             </a>
           </div>
@@ -42,6 +50,10 @@ class ListaPersonajes extends React.Component {
               <i className="material-icons">thumb_down</i>
             </a>
           </div>
+          <p>Total de votos: {totalVotos}</p>
+
+          <span className=" badge green"></span>
+          <span className=" badge red"></span>
         </div>
       );
     }
@@ -69,7 +81,7 @@ class ListaPersonajes extends React.Component {
                   </div>
                   <div className="card-content">
                     <p>{info.id}</p>
-                    {this.renderVotos()}
+                    {this.renderVotos(info.totalVotos)}
                   </div>
                 </div>
               </div>

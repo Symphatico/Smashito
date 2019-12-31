@@ -13,7 +13,8 @@ class AgregarPersonaje extends React.Component {
     let info = this.getInputValue();
     const newInfoCharacter = {
       id: info.idNuevo,
-      url: info.UrlNuevo
+      url: info.UrlNuevo,
+      totalVotos: 0
     };
     await this.props.newCharacter(newInfoCharacter);
   };
