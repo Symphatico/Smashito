@@ -9,7 +9,12 @@ export const getCharacters = async () => {
   return response.data;
 };
 
-export const getCharacter = async id => {
+export const getCharacterAPI = async id => {
   var response = await jsonPlaceholder.get(`/characters/${id}`);
+  return response.data;
+};
+
+export const getVotes = async () => {
+  var response = await jsonPlaceholder.get("/votes");
   return response.data;
 };

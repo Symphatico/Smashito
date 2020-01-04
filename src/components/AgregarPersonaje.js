@@ -13,8 +13,7 @@ class AgregarPersonaje extends React.Component {
     let info = this.getInputValue();
     const newInfoCharacter = {
       id: info.idNuevo,
-      url: info.UrlNuevo,
-      totalVotos: 0
+      url: info.UrlNuevo
     };
     await this.props.newCharacter(newInfoCharacter);
   };
@@ -42,7 +41,10 @@ class AgregarPersonaje extends React.Component {
           type="text"
         ></input>
         <Link onClick={this.redirectPage} to="/">
-          <a className="btn-floating btn-large waves-effect waves-light red right">
+          <a
+            href="#!"
+            className="btn-floating btn-large waves-effect waves-light red right"
+          >
             <i onClick={this.addCharacter} className="material-icons">
               add
             </i>

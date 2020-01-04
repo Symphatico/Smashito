@@ -2,11 +2,12 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import "./ListaPersonajes.css";
-import { characterInfo } from "../actions/characterAction";
+import { characterInfo, getAllVotes } from "../actions/characterAction";
 
 class ListaPersonajes extends React.Component {
-  async componentWillMount() {
+  async componentDidMount() {
     await this.props.characterInfo();
+    await this.props.getAllVotes();
   }
 
   sortProps() {
@@ -24,43 +25,44 @@ class ListaPersonajes extends React.Component {
       : null;
   }
 
-  darVoto(totalVotos, voto) {
-    //Voto=1/Positivo, Voto=0/Negativo
-    if (voto === 1) {
-      return totalVotos + 1;
-    }
-    return totalVotos - 1;
-  }
+  renderVotos(character2) {
+    const { votar, character1, votes } = this.props;
+    //Booleano para generar los votos
+    //Personaje seleccionado, Character2=Personaje en la lista
+    const voto = votes
+      ? votes.filter(
+          v => v.chars.includes(character1) && v.chars.includes(character2)
+        )
+      : null;
+    console.log(voto);
 
-  renderVotos(totalVotos) {
-    const { votar } = this.props;
     if (votar === true) {
       return (
-        <div className="row">
+        <div className="row" char1={character1} char2={character2}>
           <div className="col s6">
-            <a
-              onClick={() => this.totalVotos + 1}
-              className="waves-effect waves-teal btn-flat"
-            >
+            <a href="#!" className="waves-effect waves-teal btn-flat">
               <i className="material-icons">thumb_up</i>
             </a>
           </div>
           <div className="col s6">
-            <a className="waves-effect waves-teal btn-flat">
+            <a href="#!" className="waves-effect waves-teal btn-flat">
               <i className="material-icons">thumb_down</i>
             </a>
           </div>
-          <p>Total de votos: {totalVotos}</p>
+          <p>Total de votos: 0</p>
+          <p>Diferencia de votos: 0</p>
 
-          <span className=" badge green"></span>
-          <span className=" badge red"></span>
+          <span className="badge green"></span>
+          <span className="badge red"></span>
         </div>
       );
     }
   }
   renderCard() {
-    const { characters } = this.props;
-
+    let { characters, character1 } = this.props;
+    characters = characters
+      ? characters.filter(c => c.id !== character1)
+      : null;
     return characters
       ? characters.map((info, index) => {
           return (
@@ -70,10 +72,7 @@ class ListaPersonajes extends React.Component {
                   <div className="card-image">
                     <img src={info.url} alt="Pelaste" className="height" />
                     <Link
-                      to={{
-                        pathname: `/characters/${info.id}/rates`,
-                        data: { id: info.id, img: info.url }
-                      }}
+                      to={`/characters/${info.id}/rates`}
                       className="btn-floating halfway-fab waves-effect waves-light red"
                     >
                       <i className="material-icons">arrow_forward</i>
@@ -81,7 +80,7 @@ class ListaPersonajes extends React.Component {
                   </div>
                   <div className="card-content">
                     <p>{info.id}</p>
-                    {this.renderVotos(info.totalVotos)}
+                    {this.renderVotos(info.id)}
                   </div>
                 </div>
               </div>
@@ -102,7 +101,15 @@ class ListaPersonajes extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return { characters: state.characterInfo.characterInfo };
+  return {
+    characters: state.characterInfo.characterInfo,
+    votes: state.characterInfo.votes
+  };
 };
 
-export default connect(mapStateToProps, { characterInfo })(ListaPersonajes);
+const mapFunctionsToProps = {
+  characterInfo,
+  getAllVotes
+};
+
+export default connect(mapStateToProps, mapFunctionsToProps)(ListaPersonajes);

@@ -6,9 +6,9 @@ import { connect } from "react-redux";
 import { characterInfo } from "../../actions/characterAction";
 
 class Navbar extends React.Component {
-  async componentDidMount() {
-    await this.props.characterInfo();
-  }
+  // async componentDidMount() {
+  //   await this.props.characterInfo();
+  // }
 
   autocomplete() {
     const { characters } = this.props;

@@ -2,45 +2,49 @@ import React from "react";
 import "./ListaPersonajes.css";
 import ListaPersonajes from "./ListaPersonajes";
 import { connect } from "react-redux";
-import { characterInfo } from "../actions/characterAction";
+import { getCharacter } from "../actions/characterAction";
 import Spinner from "./Spinner";
 
 class PaginaPersonaje extends React.Component {
-  getData() {
-    const { characters } = this.props;
+  async componentDidMount() {
     const { characterId } = this.props.match.params;
-    const currentCharacter = characters.find(c => c.id === characterId);
-    const data = {
-      id: currentCharacter.id,
-      img: currentCharacter.url
-    };
-    return data;
+    await this.props.getCharacter(characterId);
   }
 
+  async componentDidUpdate() {
+    const { characterId } = this.props.match.params;
+    const { character } = this.props;
+    if (characterId !== character.id) {
+      await this.props.getCharacter(characterId);
+    }
+  }
   renderPersonaje() {
-    const data = this.getData();
-    console.log(data);
+    const data = this.props.character;
     return (
       <div>
         <div className="container center">
-          <img className="imagenPersonaje" src={data.img} alt="Soy la imagen" />
+          <img className="imagenPersonaje" src={data.url} alt="Soy la imagen" />
           <h3>{data.id}</h3>
         </div>
         <div>
-          <ListaPersonajes votar={true} />
+          <ListaPersonajes votar={true} character1={data.id} />
         </div>
       </div>
     );
   }
 
   render() {
-    const { characters } = this.props;
-    return characters ? this.renderPersonaje() : <Spinner />;
+    const { isLoading } = this.props;
+
+    return !isLoading ? this.renderPersonaje() : <Spinner />;
   }
 }
 
 const mapStateToProps = state => {
-  return { characters: state.characterInfo.characterInfo };
+  return {
+    character: state.characterInfo.character,
+    isLoading: state.characterInfo.isLoading
+  };
 };
 
-export default connect(mapStateToProps, { characterInfo })(PaginaPersonaje);
+export default connect(mapStateToProps, { getCharacter })(PaginaPersonaje);
