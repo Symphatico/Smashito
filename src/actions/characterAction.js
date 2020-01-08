@@ -2,24 +2,21 @@ import {
   createCharacter,
   getCharacters,
   getCharacterAPI,
-  getVotes
+  getVotes,
+  createVote
 } from "../apis/smashAPI";
 import {
   GET_CHARACTER,
   CHARACTER_INFO,
   CREATE_CHARACTER,
   SET_LOADING,
-  GET_VOTES
+  GET_VOTES,
+  CREATE_VOTE,
+  SIGN_IN,
+  SIGN_OUT
 } from "./types";
 
-export const characterInfo = () => async dispatch => {
-  const response = await getCharacters();
-  dispatch({
-    type: CHARACTER_INFO,
-    payload: response
-  });
-};
-
+//////////////VOTOS///////////
 export const getAllVotes = () => async dispatch => {
   const response = await getVotes();
   dispatch({
@@ -28,12 +25,24 @@ export const getAllVotes = () => async dispatch => {
   });
 };
 
+export const newVote = vote => async dispatch => {
+  await createVote(vote);
+  dispatch({
+    type: CREATE_VOTE,
+    payload: vote
+  });
+  dispatch(getAllVotes());
+};
+////////////////////////////////////
+
+/////////////PERSONAJES///////////////
 export const newCharacter = character => async dispatch => {
   await createCharacter(character);
   dispatch({
     type: CREATE_CHARACTER,
     payload: character
   });
+  dispatch(characterInfo());
 };
 
 export const getCharacter = id => async dispatch => {
@@ -47,9 +56,35 @@ export const getCharacter = id => async dispatch => {
   return response;
 };
 
+export const characterInfo = () => async dispatch => {
+  const response = await getCharacters();
+  dispatch({
+    type: CHARACTER_INFO,
+    payload: response
+  });
+};
+///////////////////////////////////
+
+//GOOGLE API, SIGN IN////
+export const signIn = userId => {
+  return {
+    type: SIGN_IN,
+    payload: userId
+  };
+};
+
+export const signOut = () => {
+  return {
+    type: SIGN_OUT
+  };
+};
+/////////////////////////
+
+/////SPINNER//////////////
 export const setLoading = load => {
   return {
     type: SET_LOADING,
     payload: load
   };
 };
+/////////

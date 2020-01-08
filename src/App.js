@@ -5,8 +5,6 @@ import Principal from "./components/Principal";
 import PaginaPersonaje from "./components/PaginaPersonaje";
 import Navbar from "./components/navbar/Navbar";
 import AgregarPersonaje from "./components/AgregarPersonaje";
-import votesDemo from "./components/votesDemo";
-
 class App extends React.Component {
   render() {
     return (
@@ -26,7 +24,6 @@ class App extends React.Component {
             />
             <Route path="/addCharacter" exact component={AgregarPersonaje} />
             <Route path="/characters" exact component={Principal} />
-            <Route path="/votes" exact component={votesDemo} />
           </div>
         </Router>
       </div>
