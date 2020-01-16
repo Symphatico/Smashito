@@ -5,6 +5,8 @@ import Principal from "./components/Principal";
 import PaginaPersonaje from "./components/PaginaPersonaje";
 import Navbar from "./components/navbar/Navbar";
 import AgregarPersonaje from "./components/AgregarPersonaje";
+import GoogleOAuth from "./components/GoogleOAuth";
+
 class App extends React.Component {
   render() {
     return (
@@ -26,6 +28,7 @@ class App extends React.Component {
             <Route path="/characters" exact component={Principal} />
           </div>
         </Router>
+        <GoogleOAuth />
       </div>
     );
   }

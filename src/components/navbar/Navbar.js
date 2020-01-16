@@ -1,15 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Autocomplete from "./Autocomplete";
-
+import history from "../../history";
 import { connect } from "react-redux";
 import { characterInfo } from "../../actions/characterAction";
 
 class Navbar extends React.Component {
-  // async componentDidMount() {
-  //   await this.props.characterInfo();
-  // }
-
+  onAutoComplete = info => {
+    return history.push(`/characters/${info}/rates`);
+  };
   autocomplete() {
     const { characters } = this.props;
     if (!characters) return null;
@@ -28,7 +27,12 @@ class Navbar extends React.Component {
               Logo
             </Link>
             <form>
-              <Autocomplete data={this.autocomplete()} />
+              <Autocomplete
+                data={this.autocomplete()}
+                id="navbar"
+                className="col s4 right"
+                onAutoComplete={this.onAutoComplete}
+              />
             </form>
           </div>
         </nav>

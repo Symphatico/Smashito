@@ -7,6 +7,7 @@ import {
   getAllVotes,
   newVote
 } from "../actions/characterAction";
+import InputFilter from "./InputFilter";
 
 class ListaPersonajes extends React.Component {
   async componentDidMount() {
@@ -42,27 +43,32 @@ class ListaPersonajes extends React.Component {
 
   //Sube el voto a la base de datos
   voto = async (character1, character2, bandera) => {
-    let voto = {};
-    //Bandera sera 1 si es voto a favor, 0 si es negativo
-    if (bandera === 1) {
-      voto = {
-        chars: [character1, character2],
-        winner: character1
-      };
-    } else {
-      voto = {
-        chars: [character1, character2],
-        winner: character2
-      };
+    const { userId, isSignedIn } = this.props;
+    if (isSignedIn) {
+      let voto = {};
+      //Bandera sera 1 si es voto a favor, 0 si es negativo
+      if (bandera === 1) {
+        voto = {
+          chars: [character1, character2],
+          winner: character1,
+          userId
+        };
+      } else {
+        voto = {
+          chars: [character1, character2],
+          winner: character2,
+          userId
+        };
+      }
+      await this.props.newVote(voto);
     }
-    await this.props.newVote(voto);
   };
 
   renderVotos(character2) {
     let totalVotos = null;
     let votosAFavor = null;
     let votosNegativo = null;
-    const { votar, character1, votes } = this.props;
+    const { votar, character1, votes, isSignedIn, userId } = this.props;
     //Booleano para generar los votos
     //Personaje seleccionado, Character2=Personaje en la lista
     const voto = votes //Obtiene el arreglo de objetos de los personajes que se han votado
@@ -84,22 +90,38 @@ class ListaPersonajes extends React.Component {
     }
 
     if (votar === true) {
+      let userVote =
+        votes &&
+        votes.find(
+          e =>
+            e.userId === userId &&
+            e.chars.includes(character1) &&
+            e.chars.includes(character2)
+        );
+
+      const dislikeButton =
+        userVote && userVote.winner === character2 ? "red" : "blue";
+      const likeButton =
+        userVote && userVote.winner === character1 ? "green" : "blue";
+
+      const isDisabled = isSignedIn ? "" : "disabled";
+
       return (
         <div className="row">
           <div className="col s6">
             <a
               onClick={() => this.voto(character1, character2, 1)}
               href="#!"
-              className="waves-effect waves-teal btn-flat"
+              className={`waves-effect waves-teal btn-flat ${likeButton} ${isDisabled}`}
             >
               <i className="material-icons">thumb_up</i>
             </a>
           </div>
           <div className="col s6">
             <a
-              onClick={() => this.voto(character1, character2, 2)}
+              onClick={() => this.voto(character1, character2, 0)}
               href="#!"
-              className="waves-effect waves-teal btn-flat"
+              className={`waves-effect waves-teal btn-flat ${dislikeButton} ${isDisabled}`}
             >
               <i className="material-icons">thumb_down</i>
             </a>
@@ -112,12 +134,16 @@ class ListaPersonajes extends React.Component {
       );
     }
   }
+
   renderCard() {
-    let { characters, character1 } = this.props;
+    let { characters, character1, filter } = this.props;
+
     //Filtra el personaje que fue seleccionado,porque no existen los dittos
     characters = characters
       ? characters.filter(c => c.id !== character1)
       : null;
+    //Si en el autocomplete se ingresa un string, se filtra el arreglo y renderiza el personaje seleccionado
+    // characters = filter ? characters.filter(c => c.id === filter) : characters;
     //Render a las cartas
     return characters
       ? characters.map((info, index) => {
@@ -147,10 +173,15 @@ class ListaPersonajes extends React.Component {
   }
 
   render() {
+    this.sortProps();
     return (
       <div className="container">
+        {/*AutoComplete*/}
+        <div>
+          <InputFilter />
+        </div>
         {/* Carta del personaje */}
-        <div className="row">{(this.sortProps(), this.renderCard())}</div>
+        <div className="row">{this.renderCard()}</div>
       </div>
     );
   }
@@ -159,7 +190,9 @@ class ListaPersonajes extends React.Component {
 const mapStateToProps = state => {
   return {
     characters: state.characterInfo.characterInfo,
-    votes: state.characterInfo.votes
+    votes: state.characterInfo.votes,
+    userId: state.auth.userId,
+    isSignedIn: state.auth.isSignedIn
   };
 };
 

@@ -1,7 +1,6 @@
 import React from "react";
 import ListaPersonajes from "./ListaPersonajes";
 import { Link } from "react-router-dom";
-import GoogleOAuth from "./GoogleOAuth";
 
 class Principal extends React.Component {
   render() {
@@ -13,7 +12,6 @@ class Principal extends React.Component {
             Agregar Personaje
           </Link>
         </div>
-        <GoogleOAuth />
       </div>
     );
   }

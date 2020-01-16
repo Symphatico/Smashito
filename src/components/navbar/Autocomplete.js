@@ -1,13 +1,15 @@
 //Pitudo el autocomplete, sirve para todo
 import React, { Component } from "react";
 import M from "materialize-css";
-import history from "../../history";
 
 class Autocomplete extends Component {
   componentDidMount() {
-    let { data } = this.props;
+    let { data, onAutoComplete } = this.props;
     const options = {
-      data: data
+      data: data,
+      onAutocomplete: info => {
+        onAutoComplete(info);
+      }
     };
     this.instance = M.Autocomplete.init(this._Autocomplete, options);
   }
@@ -15,28 +17,29 @@ class Autocomplete extends Component {
   componentDidUpdate() {
     if (this.instance) {
       this.instance.destroy();
-      let { data } = this.props;
+      let { data, onAutoComplete } = this.props;
       const options = {
         data: data,
         onAutocomplete: info => {
-          history.push(`/characters/${info}/rates`);
+          onAutoComplete(info);
         }
       };
-
       this.instance = M.Autocomplete.init(this._Autocomplete, options);
     }
   }
   render() {
+    const { id, className } = this.props;
+
     return (
-      <div className="input-field col s4 right">
+      <div className={`input-field ${className}`}>
         <i className="material-icons prefix">textsms</i>
         <input
           ref={el => (this._Autocomplete = el)}
           type="text"
-          id="autocomplete-input"
+          id={`autocomplete-input-${id}`}
           className="autocomplete"
         />
-        <label htmlFor="autocomplete-input">Autocomplete</label>
+        <label htmlFor={`autocomplete-input-${id}`}>Autocomplete</label>
       </div>
     );
   }

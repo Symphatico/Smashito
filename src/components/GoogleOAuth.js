@@ -8,13 +8,16 @@ class GoogleOAuth extends Component {
       window.gapi.client
         .init({
           clientId:
-            "508379505879-jfpbutc62oknnqosc1m69ddg1394ivqg.apps.googleusercontent.com",
+            "937549846133-gpudhf3fgl2r990cvbe95o10bhdi6evc.apps.googleusercontent.com",
           scope: "email"
         })
         .then(() => {
           this.auth = window.gapi.auth2.getAuthInstance();
           this.onAuthChange(this.auth.isSignedIn.get());
           this.auth.isSignedIn.listen(this.onAuthChange);
+        })
+        .catch(error => {
+          console.log(error);
         });
     });
   }
@@ -40,14 +43,23 @@ class GoogleOAuth extends Component {
       return null;
     } else if (this.props.isSignedIn) {
       return (
-        <a class="waves-effect waves-light btn">
-          <i class="material-icons left">cloud</i>Sign out
+        <a
+          onClick={this.onSignOutClick}
+          href="#!"
+          className="btn-floating red waves-effect waves-light btn"
+        >
+          <i className="material-icons left">account_circle</i>Sign out
         </a>
       );
     } else {
       return (
-        <a class="waves-effect waves-light btn">
-          <i class="material-icons left">cloud</i>Sign in with Google
+        <a
+          onClick={this.onSignInClick}
+          href="#!"
+          className="btn-floating green waves-effect waves-light btn"
+        >
+          <i className="material-icons left">account_circle</i>Sign in with
+          Google
         </a>
       );
     }
