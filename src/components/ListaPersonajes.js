@@ -7,7 +7,6 @@ import {
   getAllVotes,
   newVote
 } from "../actions/characterAction";
-import InputFilter from "./InputFilter";
 
 class ListaPersonajes extends React.Component {
   async componentDidMount() {
@@ -135,15 +134,19 @@ class ListaPersonajes extends React.Component {
     }
   }
 
+
+
   renderCard() {
     let { characters, character1, filter } = this.props;
-
     //Filtra el personaje que fue seleccionado,porque no existen los dittos
     characters = characters
       ? characters.filter(c => c.id !== character1)
       : null;
     //Si en el autocomplete se ingresa un string, se filtra el arreglo y renderiza el personaje seleccionado
-    // characters = filter ? characters.filter(c => c.id === filter) : characters;
+    filter = filter.toUpperCase();
+    characters = filter
+      ? characters.filter(c => c.id.toUpperCase().indexOf(filter) !== -1)
+      : characters;
     //Render a las cartas
     return characters
       ? characters.map((info, index) => {
@@ -176,10 +179,6 @@ class ListaPersonajes extends React.Component {
     this.sortProps();
     return (
       <div className="container">
-        {/*AutoComplete*/}
-        <div>
-          <InputFilter />
-        </div>
         {/* Carta del personaje */}
         <div className="row">{this.renderCard()}</div>
       </div>

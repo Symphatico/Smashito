@@ -4,11 +4,10 @@ import ListaPersonajes from "./ListaPersonajes";
 import { connect } from "react-redux";
 import { getCharacter } from "../actions/characterAction";
 import Spinner from "./Spinner";
-import Autocomplete from "./navbar/Autocomplete";
+import InputFilter from "./InputFilter";
 
 class PaginaPersonaje extends React.Component {
   state = { filter: "" };
-
   async componentDidMount() {
     const { characterId } = this.props.match.params;
     await this.props.getCharacter(characterId);
@@ -32,8 +31,8 @@ class PaginaPersonaje extends React.Component {
     return characterData;
   }
 
-  onAutoComplete = characterId => {
-    this.setState({ filter: characterId });
+  onInputChange = event => {
+    this.setState({ filter: event });
   };
 
   renderPersonaje() {
@@ -49,18 +48,16 @@ class PaginaPersonaje extends React.Component {
             />
             <h3>{data.id}</h3>
           </div>
-          <div className="row ">
-            <div className="col s12">
-              <Autocomplete
-                data={this.autocomplete()}
-                id="personaje"
-                className="col s12"
-                onAutoComplete={this.onAutoComplete}
-              />
-            </div>
+        </div>
+        <div className="container">
+          <div>
+            <InputFilter
+              filter={this.state.filter}
+              onInputChange={this.onInputChange}
+            />
           </div>
         </div>
-        <div className="row">
+        <div>
           <ListaPersonajes
             filter={this.state.filter}
             votar={true}

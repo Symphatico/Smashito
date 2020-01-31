@@ -6,7 +6,7 @@ class Principal extends React.Component {
   render() {
     return (
       <div>
-        <ListaPersonajes />
+        <ListaPersonajes filter="" />
         <div className="container">
           <Link to="/addCharacter" className="waves-effect waves-light btn">
             Agregar Personaje
